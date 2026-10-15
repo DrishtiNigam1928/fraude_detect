@@ -1,0 +1,14 @@
+venv/
+__pycache__/
+*.pyc
+Fraud.csv
+eda_output/
+pr_curves.png
+shap_importance.png
+.git
+.gitignore
+README.md
+PROJECT_NOTES.md
+requirements.txt
+eda.py
+train_eval.py

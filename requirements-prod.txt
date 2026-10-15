@@ -1,0 +1,11 @@
+# Lean runtime deps for serving only -- no matplotlib/shap (training-only).
+# NOTE: xgboost is installed separately in the Dockerfile with --no-deps to
+# avoid pulling in nvidia-nccl-cu12 (a large GPU library not needed for CPU
+# inference). If installing this file directly (not via Docker), also run:
+#   pip install --no-deps xgboost
+flask
+gunicorn
+joblib
+numpy
+pandas
+scikit-learn

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FraudShield — Transaction Intelligence</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="ambient ambient-1"></div>
+<div class="ambient ambient-2"></div>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">🛡</div>
+    <div class="logo-text">Fraud<span>Shield</span></div>
+  </div>
+  <div class="header-badge">LIVE DETECTION</div>
+</header>
+
+<main>
+
+  <div class="hero">
+    <div class="hero-tag">ML-POWERED · PAYSIM DATASET · XGBOOST</div>
+    <h1>Detect <em>Financial Fraud</em><br>In Real-Time</h1>
+    <p>Enter what a bank would know before approving a transaction. The model scores risk using only information available at that moment — no hindsight features.</p>
+  </div>
+
+  <div class="stats-row" id="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Dataset Size</div>
+      <div class="stat-val blue" id="stat-rows">—</div>
+      <div class="stat-sub">total transactions</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Fraud Rate</div>
+      <div class="stat-val red" id="stat-fraud-rate">—</div>
+      <div class="stat-sub" id="stat-fraud-count">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Model PR-AUC</div>
+      <div class="stat-val green" id="stat-prauc">—</div>
+      <div class="stat-sub">on held-out future data</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Fraud Recall</div>
+      <div class="stat-val warn" id="stat-recall">—</div>
+      <div class="stat-sub" id="stat-recall-sub">frauds detected</div>
+    </div>
+  </div>
+
+  <div class="two-col">
+
+    <div class="card">
+      <div class="card-title">
+        <div class="card-title-dot"></div>
+        Transaction Input
+      </div>
+
+      <div class="section-label">Quick presets</div>
+      <div class="presets">
+        <button class="preset-btn"      data-preset="fraud1">⚠ Classic Fraud</button>
+        <button class="preset-btn"      data-preset="fraud2">⚠ Cash-Out Fraud</button>
+        <button class="preset-btn safe" data-preset="legit1">✓ Normal Payment</button>
+        <button class="preset-btn safe" data-preset="legit2">✓ Normal Transfer</button>
+      </div>
+
+      <div class="form-group">
+        <label>Transaction Type</label>
+        <select id="f-type">
+          <option value="PAYMENT">PAYMENT</option>
+          <option value="TRANSFER" selected>TRANSFER</option>
+          <option value="CASH_OUT">CASH_OUT</option>
+          <option value="CASH_IN">CASH_IN</option>
+          <option value="DEBIT">DEBIT</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Amount (₹)</label>
+          <input type="number" id="f-amount" value="181" min="0">
+        </div>
+        <div class="form-group">
+          <label>Hour of Day (0–23)</label>
+          <input type="number" id="f-hour" value="3" min="0" max="23">
+        </div>
+      </div>
+
+      <div class="section-label">Sender &amp; receiver, before the transaction</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Sender balance (₹)</label>
+          <input type="number" id="f-old-orig" value="181" min="0">
+        </div>
+        <div class="form-group">
+          <label>Receiver balance (₹)</label>
+          <input type="number" id="f-old-dest" value="0" min="0">
+        </div>
+      </div>
+      <p class="form-note">Balances <em>after</em> the transfer aren't asked for — a live system wouldn't know them yet either, so the model doesn't use them.</p>
+
+      <button class="analyze-btn" id="analyze-btn">
+        ⚡ ANALYZE TRANSACTION
+      </button>
+      <p id="form-error" class="form-error" hidden></p>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:20px;">
+
+      <div class="card">
+        <div class="card-title">
+          <div class="card-title-dot"></div>
+          Live Risk Signals
+          <span id="flag-count" class="flag-count"></span>
+        </div>
+        <div class="flags-grid" id="flags-grid"></div>
+      </div>
+
+      <div class="result-panel" id="result-panel">
+        <div class="verdict-big">
+          <div class="verdict-icon-big" id="verdict-icon"></div>
+          <div class="verdict-label" id="verdict-label"></div>
+          <div class="verdict-sub" id="verdict-sub"></div>
+        </div>
+
+        <div class="active-flags-row">
+          <span>Risk score:</span>
+          <span class="active-flags-val" id="risk-score">0</span>
+          <span>/ 100 &nbsp;·&nbsp; review line at</span>
+          <span class="active-flags-val" id="risk-threshold">0</span>
+        </div>
+
+        <div class="explanation" id="explanation"></div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <div class="two-col model-card">
+
+    <div class="card">
+      <div class="card-title"><div class="card-title-dot"></div>Model vs. the bank's own rule</div>
+      <div id="model-rows">
+        <p class="muted">Loading…</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="card-title-dot"></div>Evaluation Metrics</div>
+      <div class="eval-grid" id="eval-grid"></div>
+      <div class="info-box" id="info-box"></div>
+    </div>
+
+  </div>
+
+</main>
+
+<footer>
+  Dataset: <span>PaySim Financial Fraud</span> &nbsp;·&nbsp; Model: <span>XGBoost, pre-transaction features only</span>
+</footer>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

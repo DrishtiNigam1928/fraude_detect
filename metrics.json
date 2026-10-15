@@ -1,0 +1,70 @@
+{
+  "meta": {
+    "rows": 6362620,
+    "train_rows": 4463587,
+    "val_rows": 980416,
+    "test_rows": 918617,
+    "overall_fraud_rate": 0.001290820448180152,
+    "test_fraud_rate": 0.004360903401526425,
+    "test_fraud_count": 4006,
+    "test_step_range": [
+      379,
+      743
+    ],
+    "cost_fn": 100.0,
+    "cost_fp": 1.0,
+    "deployed_model": "xgb/pre_txn",
+    "train_neg_frac": 1.0
+  },
+  "models": {
+    "logreg/pre_txn": {
+      "pr_auc": 0.5252805830765783,
+      "roc_auc": 0.9852206779666507,
+      "threshold": 0.8577889127603945,
+      "precision": 0.20212903225806453,
+      "recall": 0.7820768846729905,
+      "tp": 3133,
+      "fp": 12367,
+      "fn": 873,
+      "tn": 902244
+    },
+    "xgb/pre_txn": {
+      "pr_auc": 0.9833643987330871,
+      "roc_auc": 0.9999221026683853,
+      "threshold": 0.07534186542034149,
+      "precision": 0.691524253409287,
+      "recall": 1.0,
+      "tp": 4006,
+      "fp": 1787,
+      "fn": 0,
+      "tn": 912824
+    },
+    "logreg/full": {
+      "pr_auc": 0.8846654662117858,
+      "roc_auc": 0.9931790769375117,
+      "threshold": 0.8609264093571224,
+      "precision": 0.5237033734581662,
+      "recall": 0.8796804792810784,
+      "tp": 3524,
+      "fp": 3205,
+      "fn": 482,
+      "tn": 911406
+    },
+    "xgb/full": {
+      "pr_auc": 0.9840499435170175,
+      "roc_auc": 0.9999315163264836,
+      "threshold": 0.7632535099983215,
+      "precision": 0.845673697804563,
+      "recall": 0.9807788317523715,
+      "tp": 3929,
+      "fp": 717,
+      "fn": 77,
+      "tn": 913894
+    }
+  },
+  "bank_rule_baseline": {
+    "recall": 0.0032451323015476783,
+    "precision": 1.0,
+    "flagged": 13
+  }
+}

@@ -1,0 +1,7 @@
+venv/
+__pycache__/
+*.pyc
+Fraud.csv
+eda_output/
+pr_curves.png
+shap_importance.png
